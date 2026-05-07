@@ -5,12 +5,15 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+    alias: { "@": path.resolve(__dirname, "./src") },
+  },
+  build: {
+    rollupOptions: {
+      external: ["fsevents"],
     },
   },
   server: {
-    port: 5173,
+    port: 5174,
     proxy: {
       "/api": {
         target: "http://localhost:5000",

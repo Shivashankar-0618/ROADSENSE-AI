@@ -1,0 +1,184 @@
+@import "mapbox-gl/dist/mapbox-gl.css";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────
+   CSS Variables
+───────────────────────────────────────── */
+:root {
+  --color-primary:    #00d4ff;
+  --color-danger:     #ff2d55;
+  --color-warning:    #ffd60a;
+  --color-success:    #30d158;
+  --color-dark:       #0a0a0f;
+  --color-surface:    #12121a;
+  --color-card:       #1a1a28;
+  --color-border:     #2a2a40;
+  --color-muted:      #6b6b8a;
+}
+
+/* ─────────────────────────────────────────
+   Base
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Exo 2', sans-serif;
+  background-color: var(--color-dark);
+  color: #e0e0f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────
+   Glassmorphism Utility
+───────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: rgba(26, 26, 40, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Neon border utilities */
+  .border-neon-blue  { border-color: rgba(0, 212, 255, 0.4); }
+  .border-neon-red   { border-color: rgba(255, 45, 85, 0.4); }
+  .border-neon-green { border-color: rgba(48, 209, 88, 0.4); }
+
+  /* Severity badge */
+  .badge-critical { @apply bg-danger/20 text-danger border border-danger/30 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .badge-high     { @apply bg-orange-500/20 text-orange-400 border border-orange-500/30 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .badge-medium   { @apply bg-warning/20 text-warning border border-warning/30 text-xs font-semibold px-2 py-0.5 rounded-full; }
+  .badge-low      { @apply bg-success/20 text-success border border-success/30 text-xs font-semibold px-2 py-0.5 rounded-full; }
+
+  /* Status badge */
+  .status-pending     { @apply bg-muted/20 text-muted border border-muted/30 text-xs px-2 py-0.5 rounded-full; }
+  .status-approved    { @apply bg-primary/20 text-primary border border-primary/30 text-xs px-2 py-0.5 rounded-full; }
+  .status-in_progress { @apply bg-warning/20 text-warning border border-warning/30 text-xs px-2 py-0.5 rounded-full; }
+  .status-completed   { @apply bg-success/20 text-success border border-success/30 text-xs px-2 py-0.5 rounded-full; }
+  .status-rejected    { @apply bg-danger/20 text-danger border border-danger/30 text-xs px-2 py-0.5 rounded-full; }
+
+  /* Input field */
+  .input-field {
+    @apply w-full bg-surface border border-border rounded-xl px-4 py-3 text-white
+           placeholder-muted focus:outline-none focus:border-primary
+           transition-colors duration-200;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply bg-primary text-dark font-semibold px-6 py-3 rounded-xl
+           hover:bg-primary/90 transition-all duration-200
+           hover:shadow-glow active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply bg-white/5 border border-border text-white font-medium px-6 py-3 rounded-xl
+           hover:bg-white/10 hover:border-primary/40 transition-all duration-200
+           active:scale-95;
+  }
+
+  .btn-danger {
+    @apply bg-danger/10 border border-danger/30 text-danger font-medium px-6 py-3 rounded-xl
+           hover:bg-danger/20 transition-all duration-200 active:scale-95;
+  }
+
+  /* Card */
+  .card {
+    @apply glass rounded-2xl p-6;
+  }
+
+  /* Grid bg */
+  .grid-bg {
+    background-image: linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* ─────────────────────────────────────────
+   Scrollbar
+───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+/* ─────────────────────────────────────────
+   Map container
+───────────────────────────────────────── */
+.map-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; }
+
+/* ─────────────────────────────────────────
+   AI Scanner animation
+───────────────────────────────────────── */
+@keyframes scanLine {
+  0%   { top: 0%; opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.ai-scan-line {
+  position: absolute;
+  left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  box-shadow: 0 0 12px var(--color-primary);
+  animation: scanLine 2s linear infinite;
+}
+
+/* ─────────────────────────────────────────
+   Pulsing map markers
+───────────────────────────────────────── */
+@keyframes markerPulse {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.marker-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: markerPulse 1.5s ease-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   Loading shimmer
+───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--color-card) 25%, #232338 50%, var(--color-card) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ─────────────────────────────────────────
+   Sidebar transition
+───────────────────────────────────────── */
+.sidebar-link {
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl text-muted
+         hover:text-white hover:bg-white/5 transition-all duration-200 cursor-pointer;
+}
+
+.sidebar-link.active {
+  @apply text-primary bg-primary/10 border-l-2 border-primary;
+}

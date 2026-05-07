@@ -10,14 +10,6 @@ export default defineConfig({
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") },
   },
-  build: {
-    rollupOptions: {
-      external: ["fsevents"],
-    },
-  },
-  optimizeDeps: {
-    exclude: ["fsevents"],
-  },
   server: {
     port: 5174,
     proxy: {
